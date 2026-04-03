@@ -1,6 +1,6 @@
 import unittest
 
-from textnode import TextNode, TextType
+from textnode import *
 
 
 class TestTextNode(unittest.TestCase):
@@ -24,5 +24,25 @@ class TestTextNode(unittest.TestCase):
         node1 = TextNode("This is a text node", TextType.LINK_FORMAT)
         self.assertNotEqual(node.url, node1.url)
 
+class TestTextNodeToHTMLNode(unittest.TestCase):
+    def test_text(self):
+        node = TextNode("This is a text node", TextType.PLAIN_TEXT)
+        html_node = text_node_to_html_node(node)
+        self.assertEqual(html_node.tag, None)
+        self.assertEqual(html_node.value, "This is a text node")
+
+    def test_text_error(self):
+        node = TextNode("This is a text node", TextType.TEST_ERROR)
+        self.assertRaises(
+                Exception,
+                text_node_to_html_node, node,
+                )
+
+    def test_image(self):
+        node = TextNode("This is an image", TextType.IMG_FORMAT, "the.url.com")
+        html_node = text_node_to_html_node(node)
+        self.assertEqual(html_node.tag, "img")
+        self.assertEqual(html_node.value, "")
+        self.assertEqual(html_node.props, {"scr":"the.url.com", "alt": "This is an image"})
 if __name__ == "__main__":
     unittest.main()

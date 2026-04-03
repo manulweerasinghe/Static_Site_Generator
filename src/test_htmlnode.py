@@ -1,6 +1,5 @@
 import unittest
 
-from main import text_node_to_html_node
 from htmlnode import *
 from textnode import *
 
@@ -63,17 +62,5 @@ class TestHTMLNode(unittest.TestCase):
                 parent_node.to_html,
                 )
 
-    def test_text(self):
-        node = TextNode("This is a text node", TextType.PLAIN_TEXT)
-        html_node = text_node_to_html_node(node)
-        self.assertEqual(html_node.tag, None)
-        self.assertEqual(html_node.value, "This is a text node")
-
-    def test_text_error(self):
-        node = TextNode("This is a text node", TextType.TEST_ERROR)
-        self.assertRaises(
-                Exception,
-                text_node_to_html_node, node,
-                )
 if __name__ == "__main__":
     unittest.main()
