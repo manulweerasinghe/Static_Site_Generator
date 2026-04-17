@@ -9,7 +9,9 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
             split_word = node.text.split(delimiter)
             if len(split_word) % 2 == 0:
                 raise Exception("invalid markdown syntax")
-            for i in range(1, len(split_word)):
+            for i in range(len(split_word)):
+                if split_word[i] == "":
+                    continue
                 if i % 2 == 0:
                     split_nodes.append(TextNode(split_word[i], TextType.PLAIN_TEXT))
                 else:
