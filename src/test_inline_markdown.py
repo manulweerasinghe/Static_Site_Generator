@@ -1,6 +1,6 @@
 import unittest
 
-from split_delimiter import *
+from inline_markdown import *
 from textnode import *
 
 class TestSplitDilimiter(unittest.TestCase):
