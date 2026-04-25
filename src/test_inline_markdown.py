@@ -46,5 +46,57 @@ class TestSplitDilimiter(unittest.TestCase):
             )
         self.assertListEqual([("image", "https://i.imgur.com/zjjcJKZ.png")], matches)
 
+    def test_split_images(self):
+        node = TextNode(
+        "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and another ![second image](https://i.imgur.com/3elNhQu.png)",
+        TextType.PLAIN_TEXT,
+        )
+        new_nodes = split_nodes_images([node])
+        self.assertListEqual(
+            [
+                TextNode("This is text with an ", TextType.PLAIN_TEXT),
+                TextNode("image", TextType.IMG_FORMAT, "https://i.imgur.com/zjjcJKZ.png"),
+                TextNode(" and another ", TextType.PLAIN_TEXT),
+                TextNode(
+                    "second image", TextType.IMG_FORMAT, "https://i.imgur.com/3elNhQu.png"
+                ),
+            ],
+            new_nodes,
+        )
+    def test_split_links(self):
+        node = TextNode(
+        "This is text with an [link](https://i.imgur.com/zjjcJKZ.png) and another [second link](https://i.imgur.com/3elNhQu.png)",
+        TextType.PLAIN_TEXT,
+        )
+        new_nodes = split_nodes_links([node])
+        self.assertListEqual(
+            [
+                TextNode("This is text with an ", TextType.PLAIN_TEXT),
+                TextNode("link", TextType.LINK_FORMAT, "https://i.imgur.com/zjjcJKZ.png"),
+                TextNode(" and another ", TextType.PLAIN_TEXT),
+                TextNode(
+                    "second link", TextType.LINK_FORMAT, "https://i.imgur.com/3elNhQu.png"
+                ),
+            ],
+            new_nodes,
+        )
+    # def test_split_link_and_image(self):
+    #     node = TextNode(
+    #     "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and another [second link](https://i.imgur.com/3elNhQu.png)",
+    #     TextType.PLAIN_TEXT,
+    #     )
+    #     new_nodes = split_nodes_images([node])
+    #     new_nodes = split_nodes_links(new_nodes)
+    #     self.assertListEqual(
+    #         [
+    #             TextNode("This is text with an ", TextType.PLAIN_TEXT),
+    #             TextNode("image", TextType.IMG_FORMAT, "https://i.imgur.com/zjjcJKZ.png"),
+    #             TextNode(" and another ", TextType.PLAIN_TEXT),
+    #             TextNode(
+    #                 "second link", TextType.LINK_FORMAT, "https://i.imgur.com/3elNhQu.png"
+    #             ),
+    #         ],
+    #         new_nodes,
+    #     )
 if __name__ == "__main__":
     unittest.main()
