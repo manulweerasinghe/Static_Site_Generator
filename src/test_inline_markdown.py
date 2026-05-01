@@ -57,9 +57,7 @@ class TestSplitDilimiter(unittest.TestCase):
                 TextNode("This is text with an ", TextType.PLAIN_TEXT),
                 TextNode("image", TextType.IMG_FORMAT, "https://i.imgur.com/zjjcJKZ.png"),
                 TextNode(" and another ", TextType.PLAIN_TEXT),
-                TextNode(
-                    "second image", TextType.IMG_FORMAT, "https://i.imgur.com/3elNhQu.png"
-                ),
+                TextNode("second image", TextType.IMG_FORMAT, "https://i.imgur.com/3elNhQu.png"),
             ],
             new_nodes,
         )
@@ -98,5 +96,23 @@ class TestSplitDilimiter(unittest.TestCase):
     #         ],
     #         new_nodes,
     #     )
+    def test_text_to_textnodes(self):
+        text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+        new_nodes = text_to_textnodes(text)
+        self.assertListEqual(
+                [
+        TextNode("This is ", TextType.PLAIN_TEXT),
+        TextNode("text", TextType.BOLD_TEXT),
+        TextNode(" with an ", TextType.PLAIN_TEXT),
+        TextNode("italic", TextType.ITALIC_TEXT),
+        TextNode(" word and a ", TextType.PLAIN_TEXT),
+        TextNode("code block", TextType.CODE_TEXT),
+        TextNode(" and an ", TextType.PLAIN_TEXT),
+        TextNode("obi wan image", TextType.IMG_FORMAT, "https://i.imgur.com/fJRm4Vk.jpeg"),
+        TextNode(" and a ", TextType.PLAIN_TEXT),
+        TextNode("link", TextType.LINK_FORMAT, "https://boot.dev"),
+        ],
+                new_nodes,
+                )
 if __name__ == "__main__":
     unittest.main()
